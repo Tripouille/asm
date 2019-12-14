@@ -2,14 +2,15 @@
 	section .text
 
 _ft_strlen:
+	push	rdi
 	mov		rax, 0
 
 while:
 	cmp		byte [rdi], 0
-	je		whileDone
+	je		out
 	inc		rax
 	inc		rdi
 	jmp		while
-
-whileDone:
+out:
+	pop		rdi
 	ret

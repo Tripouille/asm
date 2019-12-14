@@ -1,4 +1,4 @@
-SRCS				= $(addprefix srcs/, ft_strlen.s)
+SRCS				= $(addprefix srcs/, ft_strlen.s ft_strcpy.s)
 
 OBJS				= ${SRCS:.s=.o}
 
