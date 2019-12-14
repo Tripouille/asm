@@ -14,6 +14,6 @@ int main()
 	printf("[Orig: %lu / Ours: %lu] String = \"%s\"\n", strlen(s), ft_strlen(s), s);
 
 
-	printf("Test de ft_strcpy:\n");
+	printf("\nTest de ft_strcpy:\n");
 	return (0);
 }
