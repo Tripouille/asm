@@ -11,6 +11,7 @@ while:
 	inc		rax
 	inc		rdi
 	jmp		while
+
 out:
 	pop		rdi
 	ret
