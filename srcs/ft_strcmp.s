@@ -4,24 +4,23 @@
 _ft_strcmp:
 	push	rdi
 	push	rsi
+	mov		r8, 0
+	mov		r9, 0
 
 while:
-	mov		r8, [rdi]
-	mov		r9, [rsi]
-	cmp		r8b, r9b
+	mov		r8b, [rdi]
+	mov		r9b, [rsi]
+	cmp		r8, r9
 	jne		out
+	test	r8, r8		;Set ZF=1 if r8 == 0
+	je		out
 	inc		rdi
 	inc		rsi
 	jmp		while
 
 out:
-	mov		rax, -1
-	mov		ax, 252
-	;sub		r8b, r9b
-	;mov		ax, r8w
-	;sub		al, r9b
-	;mov		al, 15
-	;sub		al, 10
+	mov		rax, r8
+	sub		rax, r9
 	pop		rsi
 	pop		rdi
 	ret
