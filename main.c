@@ -1,15 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/17 10:37:47 by jgambard          #+#    #+#             */
+/*   Updated: 2020/02/17 11:22:29 by jgambard         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <errno.h>
 
 size_t		ft_strlen(const char *s);
 char		*ft_strcpy(char *dst, const char *src);
 int			ft_strcmp(const char *s1, const char *s2);
 ssize_t		ft_write(int fildes, const void *buf, size_t nbyte);
+ssize_t		ft_read(int fildes, void *buf, size_t nbyte);
 
 int main()
 {
+	errno = 0;
 	char	*s = "A23456789";
 	printf("Test de ft_strlen:\n");
 	printf("[Orig: %lu / Ours: %lu] String = '%s'\n", strlen(s), ft_strlen(s), s);
@@ -37,19 +53,48 @@ int main()
 
 	printf("\nTest de ft_strcmp:\n");
 	s -= 9;
-	printf("\n[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, "A23456"), ft_strcmp(s, "A23456"), s);
-	printf("\n[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, "A23458"), ft_strcmp(s, "A23458"), s);
-	s = "123\12 2";
-	printf("\n[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, "123\12 4"), ft_strcmp(s, "123\12 4"), s);
-	printf("\n[Orig: %i / Ours: %i] String = '%s'\n", strcmp("123", "123"), ft_strcmp("123", "123"), s);
-	printf("\n[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, ""), ft_strcmp(s, ""), s);
+	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, "A23456"), ft_strcmp(s, "A23456"), s);
+	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, "A23458"), ft_strcmp(s, "A23458"), s);
+	s = "123\18 2";
+	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, "123\18 4"), ft_strcmp(s, "123\18 4"), s);
+	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp("123", "123"), ft_strcmp("123", "123"), s);
+	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, ""), ft_strcmp(s, ""), s);
+
+	int		ours;
+	int		orig;
+	char	*str = "salut";
 
 	printf("\nTest de ft_write:\n");
-	printf("\n[Orig: %zi / Ours: %zi] String = '%s'\n", write(1, "salut\n", 6), ft_write(1, "salut\n", 6), "salut\n");
-	printf("\n[Orig: %zi / Ours: %zi] String = '%s'\n", write(1, "salut\n", 0), ft_write(1, "salut\n", 0), "salut\n");
-	int		fd = open("test.txt", O_RDWR | O_CREAT, 0600);
+
+	printf("Test avec : %s\n", str);
+	dprintf(2, "Orig : ");
+	orig = write(1, str, 5);
+	printf("\nreturn : %i\n", orig);
+	dprintf(2, "Ours : ");
+	ours = ft_write(1, str, 5);
+	printf("\nreturn : %i\n", ours);
+	system("rm  test.txt");
+	int		fd = open("test.txt", O_RDWR | O_CREAT | O_TRUNC, 0600);
 	ft_write(fd, "salut", 5);
 	ft_write(fd, " ca va", 6);
+	printf("Test de ft_write dans un fd:\n");
+	system("cat test.txt");
 
+	printf("\nTest d'errno dans ft_write (9):\n");
+	ft_write(546456, "dff", 25);
+	printf("errno = %i\n", errno);
+	close(fd);
+
+	fd = open("test.txt", O_RDWR | O_CREAT, 0600);
+	char	orig_buffer[100];
+	char	our_buffer[100];
+	printf("\nTest de ft_read:\n");
+	orig_buffer[read(fd, orig_buffer, 2)] = 0;
+	printf("orig buffer : %s\n", orig_buffer);
+	close(fd);
+	fd = open("test.txt", O_RDWR | O_CREAT, 0600);
+	our_buffer[ft_read(fd, our_buffer, 2)] = 0;
+	printf("our buffer : %s\n", our_buffer);
+	close(fd);
 	return (0);
 }

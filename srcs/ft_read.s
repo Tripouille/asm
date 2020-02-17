@@ -1,4 +1,4 @@
-	global _ft_write
+	global _ft_read
 	extern ___error
 	section .text
 
@@ -8,11 +8,11 @@ error:
 	mov [rax], r8
 	jmp end
 
-_ft_write:
+_ft_read:
 	push	rdi
 	push	rsi
 	push	rdx
-	mov		rax, 0x02000004
+	mov		rax, 0x02000003
 	syscall
 	jc error
 
