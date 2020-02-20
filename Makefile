@@ -1,11 +1,11 @@
 SRCS				= $(addprefix srcs/, ft_strlen.s ft_strcpy.s ft_strcmp.s \
-						ft_write.s ft_read.s)
+						ft_write.s ft_read.s ft_strdup.s)
 
 OBJS				= ${SRCS:.s=.o}
 
 NAME				= libasm.a
 
-CFLAGS				= -Wall -Wextra -Werror
+CFLAGS				= -Wall -Wextra -Werror #-fsanitize=address
 
 test:				all
 					@gcc ${CFLAGS} ${NAME} main.c

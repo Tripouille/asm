@@ -2,7 +2,8 @@
 	section .text
 
 _ft_strlen:
-	push	rdi
+	push	rbp
+	mov		rbp, rsp
 	mov		rax, 0
 
 while:
@@ -13,5 +14,5 @@ while:
 	jmp		while
 
 out:
-	pop		rdi
+	leave
 	ret

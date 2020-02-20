@@ -9,15 +9,12 @@ error:
 	jmp end
 
 _ft_read:
-	push	rdi
-	push	rsi
-	push	rdx
+	push	rbp
+	mov		rbp, rsp
 	mov		rax, 0x02000003
 	syscall
 	jc error
 
 end:
-	pop		rdx
-	pop		rsi
-	pop		rdi
+	leave
 	ret

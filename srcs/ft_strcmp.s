@@ -2,25 +2,25 @@
 	section .text
 
 _ft_strcmp:
-	push	rdi
-	push	rsi
+	push	rbp
+	mov		rbp, rsp
 	mov		r8, 0
-	mov		r9, 0
 
 while:
 	mov		r8b, [rdi]
-	mov		r9b, [rsi]
-	cmp		r8, r9
+	cmp		r8b, [rsi]
 	jne		out
-	test	r8, r8		;Set ZF=1 if r8 == 0
+	test	r8, r8		;Set ZF=1 if r8 == 0 test = and
 	je		out
 	inc		rdi
 	inc		rsi
 	jmp		while
 
 out:
-	mov		rax, r8
+	mov		rax, 0
+	mov		al, r8b
+	mov		r9, 0
+	mov		r9b, [rsi]
 	sub		rax, r9
-	pop		rsi
-	pop		rdi
+	leave
 	ret

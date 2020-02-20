@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 10:37:47 by jgambard          #+#    #+#             */
-/*   Updated: 2020/02/17 11:22:29 by jgambard         ###   ########lyon.fr   */
+/*   Updated: 2020/02/19 14:54:46 by jgambard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char		*ft_strcpy(char *dst, const char *src);
 int			ft_strcmp(const char *s1, const char *s2);
 ssize_t		ft_write(int fildes, const void *buf, size_t nbyte);
 ssize_t		ft_read(int fildes, void *buf, size_t nbyte);
+char		*ft_strdup(const char *s1);
 
 int main()
 {
@@ -96,5 +97,14 @@ int main()
 	our_buffer[ft_read(fd, our_buffer, 2)] = 0;
 	printf("our buffer : %s\n", our_buffer);
 	close(fd);
+
+	printf("\nTest de ft_strdup:\n");
+	str = "salutations";
+	char	*orig_str = strdup(str);
+	char	*ours_str = ft_strdup(str);
+	printf("base : %p, origin : %p '%s', ours : %p '%s'\n", str, orig_str, orig_str, ours_str, ours_str);
+	free(orig_str);
+	free(ours_str);
+
 	return (0);
 }
