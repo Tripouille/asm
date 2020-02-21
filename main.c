@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 10:37:47 by jgambard          #+#    #+#             */
-/*   Updated: 2020/02/19 14:54:46 by jgambard         ###   ########.fr       */
+/*   Updated: 2020/02/21 03:11:38 by jgambard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int			ft_strcmp(const char *s1, const char *s2);
 ssize_t		ft_write(int fildes, const void *buf, size_t nbyte);
 ssize_t		ft_read(int fildes, void *buf, size_t nbyte);
 char		*ft_strdup(const char *s1);
+int			ft_cinstr(char c, char *str);
+int			ft_atoi_base(char *str, char *base);
 
 int main()
 {
@@ -105,6 +107,13 @@ int main()
 	printf("base : %p, origin : %p '%s', ours : %p '%s'\n", str, orig_str, orig_str, ours_str, ours_str);
 	free(orig_str);
 	free(ours_str);
+
+	printf("test de cinstr = %i\n", ft_cinstr('1', "prout"));
+	printf("test de cinstr = %i\n", ft_cinstr('+', " +-"));
+
+	printf("\nTest de ft_atoi_base:\n");
+	char	*atoi_str = "          \11\12\13\14\15  +-2147483649";
+	printf("%p - %d\n", atoi_str, ft_atoi_base(atoi_str, "0123456789"));
 
 	return (0);
 }
