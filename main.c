@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 10:37:47 by jgambard          #+#    #+#             */
-/*   Updated: 2020/02/21 03:34:23 by jgambard         ###   ########.fr       */
+/*   Updated: 2020/02/21 04:28:18 by jgambard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include "list.h"
 
 size_t		ft_strlen(const char *s);
 char		*ft_strcpy(char *dst, const char *src);
@@ -25,6 +26,8 @@ ssize_t		ft_read(int fildes, void *buf, size_t nbyte);
 char		*ft_strdup(const char *s1);
 int			ft_cinstr(char c, char *str);
 int			ft_atoi_base(char *str, char *base);
+t_list		*ft_create_elem(void *data);
+void		ft_list_push_front(t_list **begin_list, void *data);
 
 int main()
 {
@@ -143,6 +146,15 @@ int main()
 	atoi_str = "-00100";
 	base = "01 ";
 	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+
+	int		a = 42;
+	int		b = 21;
+	t_list	*new = ft_create_elem(&a);
+	printf("new = %p, data = %d, next = %p\n", new, ((int*)new->data)[0], new->next);
+	ft_list_push_front(&new, &b);
+	printf("nouveau new = %p, data = %d (%d), next->data = %d (%d)\n", new, ((int*)new->data)[0], b, ((int*)new->next->data)[0], a);
+	free(new->next);
+	free(new);
 
 	return (0);
 }
