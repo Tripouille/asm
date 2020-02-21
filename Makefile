@@ -6,10 +6,10 @@ OBJS				= ${SRCS:.s=.o}
 
 NAME				= libasm.a
 
-CFLAGS				= -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS				= -Wall -Wextra -Werror
 
-test:				all
-					@gcc ${CFLAGS} ${NAME} main.c
+test:				all main.o
+					@ld -lc -no_pie -macosx_version_min 10.14 ${NAME} main.o
 					@./a.out
 					@rm -rf a.out
 
@@ -18,11 +18,14 @@ all:				${NAME}
 .s.o:
 					nasm -f macho64 $<
 
+.c.o:
+					gcc ${CFLAGS} -c $<
+
 $(NAME):			${OBJS}
 					ar -rcs ${NAME} ${OBJS}
 
 clean:
-					rm -rf ${OBJS}
+					rm -rf ${OBJS} main.o
 
 fclean:				clean
 					rm -rf ${NAME}

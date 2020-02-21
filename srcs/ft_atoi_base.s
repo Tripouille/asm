@@ -74,7 +74,7 @@ while_base_is_valid:
 
 check_base_size:
 	pop		rdi
-	cmp		rcx, 3
+	cmp		rcx, 2
 	jl		error
 
 convert:

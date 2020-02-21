@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 10:37:47 by jgambard          #+#    #+#             */
-/*   Updated: 2020/02/21 03:11:38 by jgambard         ###   ########.fr       */
+/*   Updated: 2020/02/21 03:34:23 by jgambard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,12 +108,41 @@ int main()
 	free(orig_str);
 	free(ours_str);
 
-	printf("test de cinstr = %i\n", ft_cinstr('1', "prout"));
-	printf("test de cinstr = %i\n", ft_cinstr('+', " +-"));
-
 	printf("\nTest de ft_atoi_base:\n");
-	char	*atoi_str = "          \11\12\13\14\15  +-2147483649";
-	printf("%p - %d\n", atoi_str, ft_atoi_base(atoi_str, "0123456789"));
+	char	*atoi_str	= "          \11\12\13\14\15  -+-2147483648";
+	char	*base		= "0123456789";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "           -+-0";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "           -++++-1";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "-1";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "001";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "00100";
+	base = "0123456789abcdef";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "00100";
+	base = "01";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "-00100";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "-00100";
+	base = "0";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "-00100";
+	base = "011";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "-00100";
+	base = "01-";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "-00100";
+	base = "01+";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
+	atoi_str = "-00100";
+	base = "01 ";
+	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
 
 	return (0);
 }
