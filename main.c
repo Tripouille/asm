@@ -5,8 +5,20 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/21 23:58:05 by jgambard          #+#    #+#             */
+/*   Updated: 2020/02/21 23:58:58 by jgambard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 10:37:47 by jgambard          #+#    #+#             */
-/*   Updated: 2020/02/21 23:18:17 by jgambard         ###   ########.fr       */
+/*   Updated: 2020/02/21 23:57:55 by jgambard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +41,19 @@ int			ft_atoi_base(char *str, char *base);
 t_list		*ft_create_elem(void *data);
 void		ft_list_push_front(t_list **begin_list, void *data);
 int			ft_list_size(t_list *begin_list);
-int			ft_list_sort(t_list **begin_list, int (*cmp)(int, int));
+void		ft_list_sort(t_list **begin_list, int (*cmp)(int, int));
 
-void	pouet(void)
+void	show_list(t_list *list)
 {
-	write(1, "pouet\n", 6);
+	int		i;
+
+	i = 0;
+	while (list)
+	{
+		printf("list[%i] = %d\n", i, ((int*)list->data)[0]);
+		list = list->next;
+		i++;
+	}
 }
 
 int		is_one(int x)
@@ -174,37 +194,19 @@ int main()
 	t_list	*new = 0;
 	printf("size de la list = %i\n", ft_list_size(new));
 	ft_list_push_front(&new, &a);
-	printf("new = %p, data = %d, next = %p\n", new, ((int*)new->data)[0], new->next);
+	show_list(new);
 	printf("size de la list = %i\n", ft_list_size(new));
 	ft_list_push_front(&new, &b);
-	printf("nouveau new = %p, data = %d (%d), next->data = %d (%d)\n", new, ((int*)new->data)[0], b, ((int*)new->next->data)[0], a);
+	show_list(new);
 	printf("size de la list = %i\n", ft_list_size(new));
 	ft_list_push_front(&new, &c);
 	ft_list_push_front(&new, &d);
 	ft_list_push_front(&new, &e);
-	t_list		*elem;
-	elem = new;
 	printf("list before sort :\n");
-	while (elem)
-	{
-		printf("int = %d\n", ((int*)elem->data)[0]);
-		elem = elem->next;
-	}
-	printf("ret de sort = %i\n", ft_list_sort(&new, &compare));
-	elem = new;
+	show_list(new);
+	ft_list_sort(&new, &compare);
 	printf("list after sort :\n");
-	while (elem)
-	{
-		printf("int = %d\n", ((int*)elem->data)[0]);
-		elem = elem->next;
-	}
-
-	//printf("int = %d\n", ((int*)elem->data)[0]);
-	//printf("int = %d\n", ((int*)elem->next->data)[0]);
-	//printf("int = %d\n", ((int*)elem->next->next->data)[0]);
-	//printf("int = %d\n", ((int*)elem->next->next->next->data)[0]);
-	//free(new->next);
-	//free(new);
+	show_list(new);
 
 	return (0);
 }

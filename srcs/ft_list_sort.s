@@ -1,7 +1,5 @@
 	global _ft_list_sort
-	extern _pouet
 	section .text
-
 
 save_lower:
 	mov		r12, r13
@@ -17,49 +15,43 @@ _ft_list_sort:
 	push	r15
 	push	rdi
 
-	;rdi == 0 ?
-	mov		r8, [rdi] ; r8 = actual
-	mov		rdi, 0
-	mov		r10, rsi
-	mov		rsi, 0
-	mov		r12, r8   ; r12 = lower
+	mov		r8, [rdi] ; r8 = reference
 	cmp		r8, 0
 	je		out
-	mov		r13, [r8 + 8] ; r13 = elem to compare to
-	mov		r14, r8
+
+	mov		r10, rsi ; r10 = compare function
+	mov		r12, r8   ; r12 = lower
+	mov		r13, [r8 + 8] ; r13 = actual (in while)
+	mov		r14, r8 ; r14 = actual prev
 
 while:
 	cmp		r13, 0
 	je		post_while
-	mov		rdx, [r12]
-	mov		rdi, [rdx]
-	mov		rdx, [r13]
-	mov		rsi, [rdx]
-	push	r8
+	mov		rdx, [r12] ; r12 = lower ([r12] = data pointer)
+	mov		rdi, [rdx] ; data (like int or not)
+	mov		rdx, [r13] ; r13 = actual (in while)
+	mov		rsi, [rdx] ; data
 	push	r10
-	;sub		rsp, 8
-	mov		rax, 0
 	call	r10
-	;add		rsp, 8
 	cmp		ax, 0
 	jg		save_lower
-
 post_cmp:
-	mov		r14, r13 ; r14 = prev de actual
 	pop		r10
-	pop		r8
+	mov		r14, r13
 	mov		r13, [r13 + 8]
 	jmp		while
+
 post_while:
 	pop		rdi
 	push	rdi
-	cmp		r12, r8
+	cmp		r12, [rdi]
 	je		next
 	; next du prev = lower next
 	mov		rdx, [r12 + 8]
 	mov		[r15 + 8], rdx
 	; lower next = debut de list
-	mov		[r12 + 8], r8
+	mov		rdx, [rdi]
+	mov		[r12 + 8], rdx
 	; debut de list = lower
 	mov		[rdi], r12
 
