@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 10:37:47 by jgambard          #+#    #+#             */
-/*   Updated: 2020/02/21 04:28:18 by jgambard         ###   ########.fr       */
+/*   Updated: 2020/02/21 04:39:31 by jgambard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int			ft_cinstr(char c, char *str);
 int			ft_atoi_base(char *str, char *base);
 t_list		*ft_create_elem(void *data);
 void		ft_list_push_front(t_list **begin_list, void *data);
+int			ft_list_size(t_list *begin_list);
 
 int main()
 {
@@ -149,10 +150,15 @@ int main()
 
 	int		a = 42;
 	int		b = 21;
-	t_list	*new = ft_create_elem(&a);
+
+	t_list	*new = 0;
+	printf("size de la list = %i\n", ft_list_size(new));
+	ft_list_push_front(&new, &a);
 	printf("new = %p, data = %d, next = %p\n", new, ((int*)new->data)[0], new->next);
+	printf("size de la list = %i\n", ft_list_size(new));
 	ft_list_push_front(&new, &b);
 	printf("nouveau new = %p, data = %d (%d), next->data = %d (%d)\n", new, ((int*)new->data)[0], b, ((int*)new->next->data)[0], a);
+	printf("size de la list = %i\n", ft_list_size(new));
 	free(new->next);
 	free(new);
 
