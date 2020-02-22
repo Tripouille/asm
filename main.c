@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 23:58:05 by jgambard          #+#    #+#             */
-/*   Updated: 2020/02/21 23:58:58 by jgambard         ###   ########.fr       */
+/*   Updated: 2020/02/22 02:03:30 by jgambard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,34 @@ int			ft_atoi_base(char *str, char *base);
 t_list		*ft_create_elem(void *data);
 void		ft_list_push_front(t_list **begin_list, void *data);
 int			ft_list_size(t_list *begin_list);
-void		ft_list_sort(t_list **begin_list, int (*cmp)(int, int));
+void		ft_list_sort(t_list **begin_list, int (*cmp)());
+void		ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(),
+								void (*free_fct)(void *));
 
 void	show_list(t_list *list)
 {
 	int		i;
 
 	i = 0;
-	while (list)
+	while (list && i < 5)
 	{
-		printf("list[%i] = %d\n", i, ((int*)list->data)[0]);
+		//printf("list[%i] = %d\n", i, ((int*)list->data)[0]);
+		printf("list[%i] = %p\n", i, list);
 		list = list->next;
 		i++;
 	}
+	printf("end of show list\n\n");
 }
 
-int		is_one(int x)
+int		compare_pointers(int *a, int *b)
 {
-	return (x == 1 ? 1 : 0);
+	return (0);
+	return (*a == *b ? 0 : 1);
 }
 
 int		compare(int a, int b)
 {
-	printf("comparing %d to %d\n", a, b);
+	//printf("comparing %d to %d\n", a, b);
 	return (a - b);
 }
 
@@ -185,28 +190,40 @@ int main()
 	base = "01 ";
 	printf("str = [%s] base = [%s] result = [%d]\n", atoi_str, base, ft_atoi_base(atoi_str, base));
 
-	int		a = 30;
-	int		b = -15;
-	int		c = 5;
-	int		d = -9;
-	int		e = 60;
+	int		*tab[5];
+	int		i = -1;
+	while (++i < 5)
+		tab[i] = malloc(4);
+	*tab[0] = 30;
+	*tab[1] = -9;
+	*tab[2] = 5;
+	*tab[3] = -9;
+	*tab[4] = -16;
 	printf("\nTest sur la liste:\n");
 	t_list	*new = 0;
 	printf("size de la list = %i\n", ft_list_size(new));
-	ft_list_push_front(&new, &a);
+	ft_list_push_front(&new, tab[0]);
 	show_list(new);
 	printf("size de la list = %i\n", ft_list_size(new));
-	ft_list_push_front(&new, &b);
+	ft_list_push_front(&new, tab[1]);
 	show_list(new);
 	printf("size de la list = %i\n", ft_list_size(new));
-	ft_list_push_front(&new, &c);
-	ft_list_push_front(&new, &d);
-	ft_list_push_front(&new, &e);
+	ft_list_push_front(&new, tab[2]);
+	ft_list_push_front(&new, tab[3]);
+	ft_list_push_front(&new, tab[4]);
 	printf("list before sort :\n");
 	show_list(new);
 	ft_list_sort(&new, &compare);
 	printf("list after sort :\n");
 	show_list(new);
 
+	int		ref = -9;
+	printf("removing all %i from the list (new = %p)\n", ref, new);
+	ft_list_remove_if(&new, &ref, &compare_pointers, &free);
+	printf("list after removing : (new = %p)\n", new);
+	show_list(new);
+
+	new = 0;
+	while (1);
 	return (0);
 }
