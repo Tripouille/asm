@@ -32,7 +32,15 @@ while:
 	mov		rdx, [r13] ; r13 = actual (in while)
 	mov		rsi, [rdx] ; data
 	push	r10
+	
+	;
+	push	r12
+	mov		r12, rsp
+	and		rsp, -16
 	call	r10
+	mov		rsp, r12
+	pop		r12
+
 	cmp		ax, 0
 	jg		save_lower
 post_cmp:

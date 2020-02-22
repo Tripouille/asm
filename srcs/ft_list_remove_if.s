@@ -1,72 +1,70 @@
 	global _ft_list_remove_if
 	extern _free
-	extern _show_list ;a enlever
 	section .text
 
-free:
-	;link prev with next.
-	pop		rdi
-
-
+remove_elem:
+	pop		rdi ; restore rdi
 	push	rdi
-	mov		rdi, [rdi]
-	sub		rsp, 8
-	call	_show_list
-	add		rsp, 8
-	pop		rdi
 
+	;link prev to next
+	mov		r12, [rdi]
+	push	r12
+	mov		r12, [r12 + 8]
+	mov		[rdi], r12
+	pop		r12 ; restore elem in r12
 
-	mov		r15, [rdi]
-	mov		r13, [r15 + 8]
-	mov		[rdi], r13
-	;free data with free_fct.
-	push	rdi
-	mov		rdi, [r15]
-	call	r14
-	jmp		next2
-	;free the elem
-	mov		rdi, r15
+	;free data pointer
+	mov		rdi, [r12]
+	call	r13 ; free function
+	;free elem
+	mov		rdi, r12
 	call	_free
-	jmp		next2
-	;don't change rdi
 	pop		rdi
-	mov		r12, rdi
-	push	rdi
+	jmp		post_compare
+
 
 _ft_list_remove_if:
 	push	rbp
 	mov		rbp, rsp
-	push	r12
-	push	r13
-	push	r14
-	push	r15
-	push	rdx
-	push	rsi
-	push	rdi
 
+	;End the recursion
 	cmp		qword [rdi], 0
 	je		out
 
-	mov		r14, rcx
+	push	r12 ;tmp
+	push	r13 ;free function
+	push	rdx
+	push	rcx
+	push	rsi
+	push	rdi
+
+	mov		r13, rcx
+	;Call compare function
 	mov		rdi, [rdi] ; get elem
-	lea		r12, [rdi + 8] ; save the next elem
 	mov		rdi, [rdi] ; get data pointer
+
+	mov		r12, rsp ; save rsp
+	and		rsp, -16
 	call	rdx
+	mov		rsp, r12
 	cmp		ax, 0
-	je		free
-
-next2:
+	je		remove_elem
+	;if not remove elem move rdi to the pointer on the next elem
 	pop		rdi
-	pop		rsi
-	pop		rdx
-	mov		rcx, r14
-	mov		rdi, r12 ; copy the next in rdi
-	call	_ft_list_remove_if
+	mov		rdi, [rdi]
+	lea		rdi, [rdi + 8]
 
-out:
-	pop		r15
-	pop		r14
+post_compare:
+	;actualize rdi
+	pop		rsi
+	pop		rcx
+	pop		rdx
+
+	call _ft_list_remove_if
+
 	pop		r13
 	pop		r12
+
+out:
 	leave
 	ret

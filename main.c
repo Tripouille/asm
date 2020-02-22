@@ -5,20 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/21 23:58:05 by jgambard          #+#    #+#             */
-/*   Updated: 2020/02/22 02:03:30 by jgambard         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 10:37:47 by jgambard          #+#    #+#             */
-/*   Updated: 2020/02/21 23:57:55 by jgambard         ###   ########.fr       */
+/*   Updated: 2020/02/23 00:53:01 by jgambard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +40,17 @@ void	show_list(t_list *list)
 	i = 0;
 	while (list && i < 5)
 	{
-		//printf("list[%i] = %d\n", i, ((int*)list->data)[0]);
-		printf("list[%i] = %p\n", i, list);
+		printf("list[%i] = pointer = %p value = %i\n", i, list, ((int*)list->data)[0]);
 		list = list->next;
 		i++;
 	}
-	printf("end of show list\n\n");
+	printf("\n");
 }
 
 int		compare_pointers(int *a, int *b)
 {
-	return (0);
+	//return (0);
+	//printf("comparing %d to %d\n", *a, *b);
 	return (*a == *b ? 0 : 1);
 }
 
@@ -70,6 +58,12 @@ int		compare(int a, int b)
 {
 	//printf("comparing %d to %d\n", a, b);
 	return (a - b);
+}
+
+void		test_free(void *ptr)
+{
+	printf("test_free freeing %i\n", ((int*)ptr)[0]);
+	free(ptr);
 }
 
 int main()
@@ -87,7 +81,7 @@ int main()
 	char	s_orig[100];
 	char	s_ours[100];
 	char	*ret;
-	s -= 9;
+	s = "A23456789";
 	strcpy(s_orig, s);
 	ret = ft_strcpy(s_ours, s);
 	printf("[Orig: '%s' / Ours: '%s'] / [dest = %p return = %p]\n", s_orig, s_ours, s_ours, ret);
@@ -101,13 +95,13 @@ int main()
 	printf("[Orig: '%s' / Ours: '%s'] / [dest = %p return = %p]\n", s_orig, s_ours, s_ours, ret);
 
 	printf("\nTest de ft_strcmp:\n");
-	s -= 9;
+	s = "A23456789";
 	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, "A23456"), ft_strcmp(s, "A23456"), s);
 	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, "A23458"), ft_strcmp(s, "A23458"), s);
 	s = "123\18 2";
 	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, "123\18 4"), ft_strcmp(s, "123\18 4"), s);
 	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp("123", "123"), ft_strcmp("123", "123"), s);
-	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, ""), ft_strcmp(s, ""), s);
+	printf("[Orig: %i / Ours: %i] String = '%s'\n", strcmp(s, "1"), ft_strcmp(s, "1"), s);
 
 	int		ours;
 	int		orig;
@@ -145,6 +139,13 @@ int main()
 	our_buffer[ft_read(fd, our_buffer, 2)] = 0;
 	printf("our buffer : %s\n", our_buffer);
 	close(fd);
+
+	errno = 0;
+	printf("\nTest d'errno dans ft_read (9):\n");
+	ft_read(546456, 0, 25);
+	printf("errno = %i\n", errno);
+	close(fd);
+
 
 	printf("\nTest de ft_strdup:\n");
 	str = "salutations";
@@ -193,37 +194,45 @@ int main()
 	int		*tab[5];
 	int		i = -1;
 	while (++i < 5)
-		tab[i] = malloc(4);
-	*tab[0] = 30;
-	*tab[1] = -9;
-	*tab[2] = 5;
-	*tab[3] = -9;
+		tab[i] = malloc(sizeof(int));
+	*tab[0] = -16;
+	*tab[1] = 51;
+	*tab[2] = 450;
+	*tab[3] = 5;
 	*tab[4] = -16;
 	printf("\nTest sur la liste:\n");
 	t_list	*new = 0;
+
 	printf("size de la list = %i\n", ft_list_size(new));
+	printf("adding %i to the list\n", *tab[0]);
 	ft_list_push_front(&new, tab[0]);
 	show_list(new);
+
 	printf("size de la list = %i\n", ft_list_size(new));
+	printf("adding %i to the list\n", *tab[1]);
 	ft_list_push_front(&new, tab[1]);
 	show_list(new);
+
 	printf("size de la list = %i\n", ft_list_size(new));
+	printf("adding %i to the list\n", *tab[2]);
 	ft_list_push_front(&new, tab[2]);
+	printf("adding %i to the list\n", *tab[3]);
 	ft_list_push_front(&new, tab[3]);
+	printf("adding %i to the list\n", *tab[4]);
 	ft_list_push_front(&new, tab[4]);
-	printf("list before sort :\n");
+	printf("\nlist before sort :\n");
 	show_list(new);
 	ft_list_sort(&new, &compare);
 	printf("list after sort :\n");
 	show_list(new);
 
-	int		ref = -9;
+	int		ref = -16;
 	printf("removing all %i from the list (new = %p)\n", ref, new);
-	ft_list_remove_if(&new, &ref, &compare_pointers, &free);
+	ft_list_remove_if(&new, &ref, &compare_pointers, &test_free);
 	printf("list after removing : (new = %p)\n", new);
 	show_list(new);
 
 	new = 0;
-	while (1);
+	//system("leaks a.out");
 	return (0);
 }

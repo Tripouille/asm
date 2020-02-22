@@ -7,15 +7,17 @@ OBJS				= ${SRCS:.s=.o}
 
 NAME				= libasm.a
 
-CFLAGS				= -Wall -Wextra -Werror -fsanitize=address
+CFLAGS				= -Wall -Wextra -Werror
 
-test:				all main.o
-					#@ld -lc -no_pie -macosx_version_min 10.14 ${NAME} main.o
-					gcc ${CFLAGS} main.o ${NAME}
-					@./a.out
-					#@rm -rf a.out
 
 all:				${NAME}
+
+test:				all main.o
+					@ld -lc -no_pie -macosx_version_min 10.14 ${NAME} main.o
+					#gcc ${CFLAGS} main.o ${NAME}
+					@./a.out
+					@rm -rf a.out
+					@rm -rf test.txt
 
 .s.o:
 					nasm -f macho64 $<
