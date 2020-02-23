@@ -11,7 +11,6 @@ NAME				= libasm.a
 
 CFLAGS				= -Wall -Wextra -Werror
 
-
 all:				${NAME}
 
 test:				all main.o

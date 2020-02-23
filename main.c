@@ -6,7 +6,7 @@
 /*   By: jgambard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 10:37:47 by jgambard          #+#    #+#             */
-/*   Updated: 2020/02/23 00:53:01 by jgambard         ###   ########.fr       */
+/*   Updated: 2020/02/23 01:18:52 by jgambard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ int main()
 	dprintf(2, "Ours : ");
 	ours = ft_write(1, str, 5);
 	printf("\nreturn : %i\n", ours);
-	system("rm  test.txt");
 	int		fd = open("test.txt", O_RDWR | O_CREAT | O_TRUNC, 0600);
 	ft_write(fd, "salut", 5);
 	ft_write(fd, " ca va", 6);
